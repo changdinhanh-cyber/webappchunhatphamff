@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chunhatphamff Download - Công cụ hỗ trợ Free Fire Đỉnh Cao</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Cơ bản và Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #f4f5f7;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; }
+        
+        /* Modal Thông Báo / Modal Tải Về */
+        .welcome-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeInOverlay 0.3s ease forwards;
+        }
+        .welcome-modal-content {
+            background-color: #fff;
+            width: 85%;
+            max-width: 350px;
+            padding: 25px 20px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: scale(0.9);
+            animation: popIn 0.3s ease forwards;
+            position: relative;
+        }
+        .welcome-modal-content h3 {
+            color: #2b579a;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        .welcome-modal-content p {
+            font-size: 1rem;
+            color: #444;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .btn-understand {
+            background-color: #0068ff;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .btn-understand:active {
+            transform: scale(0.96);
+        }
+
+        /* Khung Loading To (Dành riêng cho nút tải) */
+        .download-modal-box {
+            max-width: 420px;
+            padding: 40px 25px;
+        }
+        .loader {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #2b579a;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Nút Tắt Modal Tải Về */
+        .close-download-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #888;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        /* Header / Navbar */
+        header {
+            background-color: #2b579a;
+            color: #fff;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+        header h1 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+        .search-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            min-height: 100vh;
+            padding-bottom: 90px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+
+        .app-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        .app-icon {
+            width: 85px;
+            height: 85px;
+            border-radius: 18px;
+            margin-right: 18px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .app-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .app-info h2 {
+            font-size: 1.5rem;
+            color: #111;
+            margin-bottom: 4px;
+        }
+        .app-info p.category {
+            color: #2b579a;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .rating {
+            color: #f39c12;
+            font-size: 0.85rem;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            background: #fafafa;
+        }
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 14px 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #777;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .tab-btn.active {
+            color: #2b579a;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #2b579a;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.4s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .content-section {
+            margin-bottom: 20px;
+        }
+        .content-section h3 {
+            font-size: 1.15rem;
+            color: #222;
+            margin-bottom: 12px;
+            border-left: 4px solid #2b579a;
+            padding-left: 10px;
+            background-color: #f8f9fa;
+            padding: 8px 10px;
+            border-radius: 4px;
+        }
+        .content-section p, .content-section ul {
+            font-size: 0.95rem;
+            color: #444;
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+        .content-section ul {
+            padding-left: 20px;
+        }
+        .content-section li {
+            margin-bottom: 8px;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .info-table tr { border-bottom: 1px solid #eee; }
+        .info-table tr:last-child { border-bottom: none; }
+        .info-table td {
+            padding: 12px 15px;
+            font-size: 0.95rem;
+        }
+        .info-table td:first-child {
+            font-weight: 600;
+            color: #555;
+            width: 40%;
+            background-color: #fafafa;
+        }
+        .info-table td:last-child { color: #222; }
+        .rating-stars { color: #f39c12; letter-spacing: 2px; }
+
+        .faq-q {
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        .ad-slot {
+            width: 100%;
+            margin: 25px 0;
+            border-radius: 8px;
+            overflow: hidden; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+        }
+        .ad-slot a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .ad-slot img {
+            width: 100%;
+            height: auto;
+            display: block; 
+            transition: transform 0.3s ease;
+        }
+        .ad-slot img:hover {
+            transform: scale(1.02); 
+        }
+
+        .bottom-actions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            padding: 12px 20px;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: center;
+            z-index: 100;
+        }
+        .bottom-actions .container-actions {
+            max-width: 600px;
+            width: 100%;
+            display: flex;
+            gap: 12px;
+        }
+        .btn-download {
+            flex: 1;
+            padding: 14px 0;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity 0.2s, transform 0.1s;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn-download:active {
+            transform: scale(0.98);
+        }
+        .btn-ios { background-color: #000; }
+        .btn-android { background-color: #3DDC84; color: #000; }
+
+        .popup-ad {
+            position: fixed;
+            bottom: 90px;
+            right: 15px;
+            width: 260px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            padding: 0; 
+            z-index: 1000;
+            display: none; 
+            border: 1px solid #eee;
+            overflow: hidden; 
+        }
+        .popup-ad.show {
+            display: block;
+            animation: slideInRight 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+        .popup-header {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 10px;
+            background: rgba(255,255,255,0.7); 
+            z-index: 10;
+        }
+        .popup-header span {
+            font-size: 0.7rem;
+            color: #555;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .popup-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #fff; 
+            cursor: pointer;
+            line-height: 1;
+            background-color: rgba(0,0,0,0.5); 
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .popup-close:hover { color: #ff4757; }
+        .popup-content {
+            width: 100%;
+            display: block;
+            padding: 0;
+            margin-top: 25px; 
+        }
+        .popup-content a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .popup-content img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .zalo-chat-btn {
+            position: fixed;
+            bottom: 90px;
+            left: 15px;
+            width: 55px;
+            height: 55px;
+            background-color: #0068ff;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            box-shadow: 0 4px 10px rgba(0, 104, 255, 0.4);
+            z-index: 1000;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            animation: pulse-zalo 2s infinite;
+        }
+        .zalo-chat-btn:hover { transform: scale(1.1); }
+
+        footer {
+            text-align: center;
+            padding: 25px 20px;
+            font-size: 0.85rem;
+            color: #888;
+            background-color: #f8f9fa;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulse-zalo {
+            0% { box-shadow: 0 0 0 0 rgba(0, 104, 255, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 104, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 104, 255, 0); }
+        }
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="welcome-modal" class="welcome-modal-overlay">
+        <div class="welcome-modal-content">
+            <h3>🔔 Thông báo</h3>
+            <p>Chào mừng bạn đã đến với app <strong>chunhatphamff</strong> website tải app miễn phí !!</p>
+            <button class="btn-understand" onclick="closeWelcomeModal()">Đã hiểu</button>
+        </div>
+    </div>
+
+    <div id="download-modal" class="welcome-modal-overlay" style="display: none;">
+        <div class="welcome-modal-content download-modal-box">
+            <button class="close-download-btn" onclick="closeDownloadModal()">×</button>
+            
+            <div id="loading-spinner">
+                <div class="loader"></div>
+                <p style="margin-top: 20px; font-weight: bold; font-size: 1.1rem; color: #2b579a;">Hệ thống đang lấy link tải...</p>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Vui lòng không thoát trang</p>
+            </div>
+
+            <div id="download-error-msg" style="display: none;">
+                <p style="color: #e74c3c; font-size: 1.25rem; font-weight: bold; margin-bottom: 15px;">Hiện không thể truy cập vui lòng thử lại sau 3-5 phút sau ...</p>
+                <p style="color: #444; font-size: 0.95rem; margin-bottom: 20px;">Video hướng dẫn hiện không thể truy cập vui lòng thử lại sau.</p>
+                
+                <div style="border-top: 1px dashed #ccc; padding-top: 15px;">
+                    <p style="color: #2b579a; font-weight: 600; font-size: 0.95rem;">Nếu gặp lỗi hãy liên hệ cho admin qua Zalo hoặc Tele để được hỗ trợ. Trân thành cảm ơn!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-left">
+            <img src="https://i.postimg.cc/HLMTTQMY/4759A0B8-E067-4933-A1B0-72F8BA84466B.png" alt="Logo Nhỏ" class="header-logo">
+            <h1>chunhatphamff</h1>
+        </div>
+        <button class="search-btn" aria-label="Tìm kiếm">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </button>
+    </header>
+
+    <div class="container">
+        <div class="app-header">
+            <div class="app-icon">
+                <img src="https://i.postimg.cc/HLMTTQMY/4759A0B8-E067-4933-A1B0-72F8BA84466B.png" alt="chunhatphamff Logo">
+            </div>
+            <div class="app-info">
+                <h2>chunhatphamff Pro</h2>
+                <p class="category">Công Cụ & Mod Free Fire</p>
+                <div class="rating">★★★★★ <span>4.9 (1.782+ lượt tải)</span></div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('gioi-thieu', event)">Giới Thiệu</button>
+            <button class="tab-btn" onclick="openTab('tinh-nang', event)">Tính Năng App</button>
+        </div>
+
+        <div id="gioi-thieu" class="tab-content active">
+            
+            <div class="content-section">
+                <h3>Thông tin phần mềm</h3>
+                <table class="info-table">
+                    <tr>
+                        <td>Đánh giá:</td>
+                        <td><span class="rating-stars">★★★★★</span> 4.9 ★ 223 👨</td>
+                    </tr>
+                    <tr>
+                        <td>Phát hành:</td>
+                        <td><a href="#" style="color: #2b579a;">chunhatphamff app</a></td>
+                    </tr>
+                    <tr>
+                        <td>Version:</td>
+                        <td>3.20.6403 (Mới nhất)</td>
+                    </tr>
+                    <tr>
+                        <td>Sử dụng:</td>
+                        <td>Miễn phí</td>
+                    </tr>
+                    <tr>
+                        <td>Dung lượng:</td>
+                        <td>84,2 MB</td>
+                    </tr>
+                    <tr>
+                        <td>Lượt xem:</td>
+                        <td>15.602</td>
+                    </tr>
+                    <tr>
+                        <td>Lượt tải:</td>
+                        <td>1.782</td>
+                    </tr>
+                    <tr>
+                        <td>Cập nhật:</td>
+                        <td>Hôm nay</td>
+                    </tr>
+                    <tr>
+                        <td>Yêu cầu:</td>
+                        <td>Android 4.4 / iOS 12.0 trở lên</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="ad-slot">
+                <a href="https://vt.tiktok.com/ZS98MENjAHALR-9QgxE/" target="_blank">
+                    <img src="https://i.postimg.cc/T2q6PdHk/IMG-0363.jpg" alt="Quảng cáo 1" loading="lazy">
+                </a>
+            </div>
+
+            <div class="content-section">
+                <h3>Tổng quan về ứng dụng</h3>
+                <p><strong>chunhatphamff</strong> là công cụ hỗ trợ giải nén, quản lý tệp tin và cung cấp các bản Mod mạnh mẽ nhất dành riêng cho tựa game Free Fire. Nếu bạn đang tìm kiếm giải pháp kéo tâm chuẩn xác hay tối ưu hóa FPS, đây chính là ứng dụng dành cho bạn.</p>
+                
+                <h4 class="faq-q">chunhatphamff có hợp pháp không?</h4>
+                <p>App của chúng tôi không phải là nền tảng phân phối game lậu.</p>
+                <ul>
+                    <li>Ứng dụng chỉ cung cấp các bộ công cụ tinh chỉnh file nội bộ (Data/OBB) trên thiết bị của bạn.</li>
+                    <li>Người dùng không phải trả phí cho chunhatphamff, chúng tôi không crack ứng dụng gốc của nhà phát hành.</li>
+                </ul>
+                <p>Tuy nhiên:</p>
+                <ul>
+                    <li>Việc sử dụng các tính năng Mod/Hack can thiệp sâu vào game có thể vi phạm điều khoản của nhà phát hành Garena. Rủi ro về tài khoản hoàn toàn thuộc về người dùng.</li>
+                    <li>Khuyến cáo người chơi nên trải nghiệm các tính năng trên tài khoản phụ (Guest) để đảm bảo an toàn.</li>
+                </ul>
+
+                <h4 class="faq-q">chunhatphamff có an toàn không?</h4>
+                <p>Mặc dù bản thân ứng dụng của chúng tôi không chứa mã độc hay virus, nhưng hệ thống chống gian lận của game luôn quét rất gắt gao. Đã có những trường hợp người dùng lạm dụng tính năng dẫn đến việc bị khóa nick (ban account). Do đó, tính an toàn của tài khoản phụ thuộc rất nhiều vào mức độ thận trọng và việc sử dụng tính năng Anti-Ban (chống khóa) đi kèm trong app của bạn.</p>
+            </div>
+
+            <div class="ad-slot">
+                <a href="https://vt.tiktok.com/ZS98MENjAHALR-9QgxE/" target="_blank">
+                    <img src="https://i.postimg.cc/1trjyt5w/IMG-0368.jpg" alt="Quảng cáo 2" loading="lazy">
+                </a>
+            </div>
+
+            <div class="content-section">
+                <h4 class="faq-q">Làm thế nào để cài đặt chunhatphamff?</h4>
+                <p>Đầu tiên, tải ứng dụng thông qua các nút tải bên dưới màn hình. Sau đó, tìm file vừa tải về và tiến hành cài đặt bằng cách bật <strong>"Install from unknown sources (Cài đặt từ nguồn không xác định)"</strong> trong phần Cài đặt Bảo mật trên thiết bị Android của bạn.</p>
+
+                <h4 class="faq-q">Tại sao tôi không thể cài đặt ứng dụng đã tải xuống?</h4>
+                <p>Các lý do phổ biến bao gồm:</p>
+                <ul>
+                    <li>Không bật tùy chọn "Cài đặt từ nguồn không xác định" trong thiết bị của bạn.</li>
+                    <li>Phiên bản hệ điều hành Android / iOS không tương thích (quá cũ).</li>
+                    <li>Thiết bị của bạn đang bị đầy bộ nhớ lưu trữ, hãy xóa bớt dữ liệu thừa.</li>
+                </ul>
+            </div>
+
+            <div class="ad-slot">
+                <a href="https://vt.tiktok.com/ZS98MENjAHALR-9QgxE/" target="_blank">
+                    <img src="https://i.postimg.cc/jdmZ0N4r/IMG-0369.jpg" alt="Quảng cáo 3" loading="lazy">
+                </a>
+            </div>
+
+            <div class="content-section">
+                <h4 class="faq-q">Làm thế nào để cập nhật ứng dụng?</h4>
+                <p>chunhatphamff bao gồm tính năng tự động thông báo cho người dùng khi có bản cập nhật mới (nhất là khi Free Fire cập nhật bản OB mới). Bạn cũng có thể tự kiểm tra và tải xuống phiên bản cài đặt mới nhất trực tiếp ngay tại trang web này.</p>
+
+                <h4 class="faq-q">Tôi có thể tải xuống các phiên bản cũ hơn không?</h4>
+                <p>Có. Một trong những tính năng chính của trang web chúng tôi là cung cấp cả kho lưu trữ các phiên bản ứng dụng trước đó, điều này cực kỳ hữu ích nếu bản cập nhật Mod mới nhất có lỗi hoặc sự cố không tương thích với dòng máy của bạn.</p>
+
+                <h4 class="faq-q">Tại sao game thủ sử dụng chunhatphamff thay vì CH Play?</h4>
+                <p>Chúng tôi cung cấp quyền truy cập vào các công cụ tinh chỉnh hệ thống, hỗ trợ kéo tâm, mod skin - những thứ mang lại lợi thế cực lớn trong game mà Google Play hay App Store nghiêm cấm phát hành, mang đến cho người dùng nhiều sự linh hoạt và trải nghiệm giải trí tuyệt vời hơn.</p>
+            </div>
+        </div>
+
+        <div id="tinh-nang" class="tab-content">
+            <div class="content-section">
+                <h3>1. Hỗ Trợ Kéo Tâm (Auto Headshot)</h3>
+                <p>Tính năng mạnh mẽ nhất giúp bạn thành thạo mọi loại vũ khí. App cho phép bạn tinh chỉnh độ nhạy vượt giới hạn máy, tự động ghim tâm vào mục tiêu và tăng tỷ lệ Headshot lên tối đa.</p>
+            </div>
+
+            <div class="ad-slot">
+                <a href="https://vt.tiktok.com/ZS98MENjAHALR-9QgxE/" target="_blank">
+                    <img src="https://i.postimg.cc/4yrtMvkL/IMG-0370.jpg" alt="Quảng cáo 4" loading="lazy">
+                </a>
+            </div>
+
+            <div class="content-section">
+                <h3>2. Giải Nén & Chỉnh Sửa File Game</h3>
+                <p>Tích hợp trình quản lý tệp tin siêu tốc. Dễ dàng giải nén các file Data, OBB hay Mod Skin trực tiếp ngay trên app mà không cần phần mềm thứ 3. Tính năng chèn file đè tự động cài Mod chỉ trong vài giây.</p>
+            </div>
+
+            <div class="content-section">
+                <h3>3. Tối Ưu Hóa & Giảm Lag FPS</h3>
+                <p>Dành riêng cho máy yếu. App mở khóa 60 FPS, tự động dọn dẹp RAM ngầm, xóa hiệu ứng sương mù thừa thãi trong bản đồ giúp quá trình giao tranh mượt mà nhất.</p>
+            </div>
+            
+            <div class="content-section">
+                <h3>4. Anti-Ban Vượt Tường Lửa</h3>
+                <p>Hệ thống ẩn danh tự động xóa log file, fake IMEI định kỳ để qua mặt hệ thống quét của Garena, giảm thiểu rủi ro bị cấm tài khoản khi sử dụng Mod.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 chunhatphamff Download. All rights reserved.</p>
+            <p style="margin-top: 5px;">Hỗ trợ qua Telegram: <strong>@nhatpham27</strong></p>
+        </footer>
+    </div>
+
+    <a href="https://zalo.me/84961547842" target="_blank" class="zalo-chat-btn" aria-label="Hỗ trợ qua Zalo">
+        <i class="fas fa-comment-dots"></i>
+    </a>
+
+    <div class="bottom-actions">
+        <div class="container-actions">
+            <a href="#" onclick="handleDownloadClick(event)" class="btn-download btn-ios">
+                <i class="fab fa-apple"></i> Tải cho iOS
+            </a>
+            <a href="#" onclick="handleDownloadClick(event)" class="btn-download btn-android">
+                <i class="fab fa-android"></i> Tải file APK
+            </a>
+        </div>
+    </div>
+
+    <div id="popup-ad" class="popup-ad">
+        <div class="popup-header">
+            <span>Tài trợ</span>
+            <button class="popup-close" onclick="closePopup()">×</button>
+        </div>
+        <div class="popup-content">
+            <a href="https://vt.tiktok.com/ZS98MENjAHALR-9QgxE/" target="_blank">
+                <img src="https://i.postimg.cc/FsygqqzL/IMG-0371.jpg" alt="Quảng cáo Popup">
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Danh sách các link TikTok ngẫu nhiên
+        const tiktokLinks = [
+            "https://vt.tiktok.com/ZS9eQnVNkWqrH-NDwQg/",
+            "https://vt.tiktok.com/ZS9eQnpk1jcTU-0sAGn/",
+            "https://vt.tiktok.com/ZS9eQntSfgCqA-VUA7g/",
+            "https://vt.tiktok.com/ZS9RdMkvcsYJR-5XXqs/",
+            "https://vt.tiktok.com/ZS9RdMDFCcqDr-Wkvnr/",
+            "https://vt.tiktok.com/ZS9RdM5HDghE3-elmmE/",
+            "https://vt.tiktok.com/ZS9RdMaACXLWq-W52rL/",
+            "https://vt.tiktok.com/ZS9RdMQDJELpG-ro8Sc/",
+            "https://vt.tiktok.com/ZS9RdMqtxbCqJ-sPyPM/",
+            "https://vt.tiktok.com/ZS9RdMnUbwUyf-ajbD7/",
+            "https://vt.tiktok.com/ZS9RdMWyakByQ-0Uozs/",
+            "https://vt.tiktok.com/ZS9RdMTBSXFH1-4eGKd/"
+        ];
+
+        // Xử lý khi bấm nút TẢI VỀ
+        function handleDownloadClick(event) {
+            event.preventDefault(); // Chặn hành động tải mặc định của thẻ <a>
+
+            // 1. Mở một link TikTok ngẫu nhiên sang tab mới
+            const randomLink = tiktokLinks[Math.floor(Math.random() * tiktokLinks.length)];
+            window.open(randomLink, '_blank');
+
+            // 2. Hiển thị màn hình Loading trên trang hiện tại
+            var modal = document.getElementById('download-modal');
+            var spinner = document.getElementById('loading-spinner');
+            var errorMsg = document.getElementById('download-error-msg');
+            
+            modal.style.display = 'flex';
+            spinner.style.display = 'block';
+            errorMsg.style.display = 'none';
+
+            // 3. Setup thời gian Loading từ 3 đến 5 giây
+            var loadingTime = Math.floor(Math.random() * 2000) + 3000; // random từ 3000ms - 5000ms
+            
+            setTimeout(function() {
+                // 4. Sau 3-5s, ẩn vòng xoay, hiện thông báo lỗi
+                spinner.style.display = 'none';
+                errorMsg.style.display = 'block';
+            }, loadingTime);
+        }
+
+        // Tắt Modal Tải về
+        function closeDownloadModal() {
+            document.getElementById('download-modal').style.display = 'none';
+        }
+
+        // Modal Chào mừng
+        function closeWelcomeModal() {
+            document.getElementById('welcome-modal').style.display = 'none';
+        }
+
+        // Chuyển Tab
+        function openTab(tabId, event) {
+            var contents = document.querySelectorAll('.tab-content');
+            contents.forEach(function(content) {
+                content.classList.remove('active');
+            });
+
+            var buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+            
+            window.scrollTo({ top: 150, behavior: 'smooth' });
+        }
+
+        // Popup Quảng cáo xuất hiện sau khi load
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('popup-ad').classList.add('show');
+            }, 1500);
+        });
+
+        // Tắt Popup quảng cáo
+        function closePopup() {
+            document.getElementById('popup-ad').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
